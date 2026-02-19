@@ -1,10 +1,11 @@
 import { Router } from "express";
+import { compare } from "bcrypt";
 import User from "../models/userModel.js";
-import { sign } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
 const authRouter = Router();
 
-authRouter("/login", async (req, res) => {
+authRouter.post("/login", async (req, res) => {
   try {
     const { email, password: plainPassword } = req.body;
     const currentUser = await User.findOne({ email });
@@ -12,7 +13,10 @@ authRouter("/login", async (req, res) => {
       throw Error("Bad Authentication");
     } else {
       // Token Signing
-      const token = sign();
+      const token = jwt.sign({ email }, process.env.JWT_SECRET, {
+        algorithm: "HS256",
+        expiresIn: "1h",
+      });
       res.status(200).json({ message: "User Authenticated", token });
     }
   } catch (error) {
