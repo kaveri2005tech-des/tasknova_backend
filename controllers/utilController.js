@@ -1,6 +1,5 @@
 import User from "../models/userModel.js";
 
-["testemail+groupowner@email.com", "testemail+admin@email.com"];
 export const isUserValid = async function (compareEmail) {
   const userEmails = await User.find().select({
     _id: false,

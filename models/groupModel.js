@@ -95,6 +95,12 @@ const groupSchema = new Schema(
   { versionKey: false },
 );
 
+groupSchema.pre("save", async function () {
+  const nGroup = (await this.constructor.countDocuments()) + 1;
+  const extras = nGroup < 10 ? "00" : nGroup < 100 ? "0" : "";
+  this.taskId = `GRP-${extras + nGroup}`;
+});
+
 const GroupModel = model("Group", groupSchema);
 
 export default GroupModel;
