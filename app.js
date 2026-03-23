@@ -1,5 +1,5 @@
 import express from "express";
-import authenticateUser from "./controllers/authController.js";
+import { authenticateUser } from "./controllers/authController.js";
 import authRouter from "./routes/authRouter.js";
 import userRouter from "./routes/userRouter.js";
 import groupRouter from "./routes/groupRoute.js";
@@ -11,7 +11,12 @@ export const client = createClient({ port: process.env.REDIS_PORT });
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.FE_URL,
+    credentials: true,
+  }),
+);
 app.use(express.json());
 
 app.use("/user", userRouter);

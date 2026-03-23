@@ -3,7 +3,7 @@ config({ path: [".env"] });
 import { connect } from "mongoose";
 import server from "./app.js";
 
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 
 (async function () {
   try {
